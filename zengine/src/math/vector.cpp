@@ -54,4 +54,16 @@ namespace zengine
 	{
 		return !(v1 == v2);
 	}
+	vector3 operator + (const vector3& v1, const vector3& v2)
+	{
+		return vector3(v1.x_ + v2.x_, v1.y_ + v2.y_, v1.z_ + v2.z_);
+	}
+	vector3 operator - (const vector3& v1, const vector3& v2)
+	{
+		return vector3(v1.x_ - v2.x_, v1.y_ - v2.y_, v1.z_ - v2.z_);
+	}
+	vector3 operator * (float k, const vector3& v)
+	{
+		return vector3(k * v.x_, k * v.y_, k * v.z_);
+	}
 }

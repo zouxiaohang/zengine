@@ -15,6 +15,8 @@ namespace zengine
 
 		float dotProduct(const vector3& v)const;
 		vector3 crossProduct(const vector3& v)const;
+
+		vector3 operator - ()const{ return vector3(-x_, -y_, -z_); }
 	public:
 		float x_;
 		float y_;
@@ -23,6 +25,9 @@ namespace zengine
 
 	bool operator == (const vector3& v1, const vector3& v2);
 	bool operator != (const vector3& v1, const vector3& v2);
+	vector3 operator + (const vector3& v1, const vector3& v2);
+	vector3 operator - (const vector3& v1, const vector3& v2);
+	vector3 operator * (float k, const vector3& v);
 }
 
 #endif
