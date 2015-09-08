@@ -12,10 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\math\vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\math_util.hpp" />
+    <ClInclude Include="src\math\quaternion.hpp" />
     <ClInclude Include="src\math\vector.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -16,6 +16,8 @@ namespace zengine
 		float dotProduct(const vector3& v)const;
 		vector3 crossProduct(const vector3& v)const;
 
+		vector3 lerp(const vector3& v, float t);
+
 		vector3 operator - ()const{ return vector3(-x_, -y_, -z_); }
 	public:
 		float x_;
