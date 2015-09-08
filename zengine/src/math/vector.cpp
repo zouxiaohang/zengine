@@ -5,6 +5,7 @@
 
 namespace zengine
 {
+	//******************  vector3 **********************
 	vector3::vector3(const vector3& v)
 	{
 		x_ = v.x_;
@@ -73,5 +74,24 @@ namespace zengine
 	vector3 operator * (float k, const vector3& v)
 	{
 		return vector3(k * v.x_, k * v.y_, k * v.z_);
+	}
+
+	//******************  vector4 **********************
+	vector4::vector4(const vector4& v)
+	{
+		x_ = v.x_;
+		y_ = v.y_;
+		z_ = v.z_;
+		w_ = v.w_;
+	}
+
+	vector4& vector4::operator = (const vector4& v)
+	{
+		x_ = v.x_;
+		y_ = v.y_;
+		z_ = v.z_;
+		w_ = v.w_;
+
+		return *this;
 	}
 }

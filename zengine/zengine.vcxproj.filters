@@ -16,6 +16,9 @@
     <ClCompile Include="src\math\quaternion.cpp">
       <Filter>src\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\matrix.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\vector.hpp">
@@ -25,6 +28,9 @@
       <Filter>src\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\quaternion.hpp">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\matrix.hpp">
       <Filter>src\math</Filter>
     </ClInclude>
   </ItemGroup>

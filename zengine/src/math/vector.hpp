@@ -30,6 +30,19 @@ namespace zengine
 	vector3 operator + (const vector3& v1, const vector3& v2);
 	vector3 operator - (const vector3& v1, const vector3& v2);
 	vector3 operator * (float k, const vector3& v);
+
+	class vector4
+	{
+	public:
+		vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) :x_(x), y_(y), z_(z), w_(w){}
+		vector4(const vector4& v);
+		vector4& operator = (const vector4& v);
+	public:
+		float x_;
+		float y_;
+		float z_;
+		float w_;
+	};
 }
 
 #endif
