@@ -37,6 +37,11 @@ namespace zengine
 		vector4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f) :x_(x), y_(y), z_(z), w_(w){}
 		vector4(const vector4& v);
 		vector4& operator = (const vector4& v);
+
+		void normalize();
+		float length()const;
+
+		vector4 operator - ()const{ return vector4(-x_, -y_, -z_, w_); }
 	public:
 		float x_;
 		float y_;

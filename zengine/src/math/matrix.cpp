@@ -150,6 +150,18 @@ namespace zengine
 		_44 = 1.0f;
 	}
 
+	quaternion matrix::toQuaternion()const
+	{
+		quaternion q(0.0f, vector3());
+
+		q.w_ = sqrtf(_11 + _22 + _33 + 1) / 2;
+		q.v_.x_ = (_23 - _32) / (4 * q.w_);
+		q.v_.y_ = (_31 - _13) / (4 * q.w_);
+		q.v_.z_ = (_12 - _21) / (4 * q.w_);
+
+		return q;
+	}
+
 	vector4 matrix::applyVector4(const vector4& v)
 	{
 		vector4 ret;

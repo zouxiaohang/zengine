@@ -94,4 +94,19 @@ namespace zengine
 
 		return *this;
 	}
+
+	void vector4::normalize()
+	{
+		auto len = length();
+
+		x_ /= len;
+		y_ /= len;
+		z_ /= len;
+		w_ /= len;
+	}
+
+	float vector4::length()const
+	{
+		return sqrtf(x_ * x_ + y_ * y_ + z_ * z_ + w_ * w_);;
+	}
 }

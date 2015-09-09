@@ -29,6 +29,7 @@ namespace zengine
 		void setTranslation(const vector3& t);
 
 		void fromQuaternion(const quaternion& q);
+		quaternion toQuaternion()const;
 
 		vector4 applyVector4(const vector4& v);
 	public:
