@@ -15,9 +15,6 @@ namespace zengine
 		matrix(const matrix& mat);
 		matrix& operator = (const matrix& mat);
 
-		void row(int r, const vector4& v);
-		vector4 row(int r)const;
-
 		void identity();
 		float determinant()const;
 		void inverse();

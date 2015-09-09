@@ -117,4 +117,12 @@ namespace zengine
 	{
 		return sqrtf(x_ * x_ + y_ * y_ + z_ * z_ + w_ * w_);;
 	}
+
+	void vector4::homogeneous()
+	{
+		x_ /= w_;
+		y_ /= w_;
+		z_ /= w_;
+		w_ /= w_;
+	}
 }

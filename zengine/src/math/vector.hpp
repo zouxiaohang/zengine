@@ -41,6 +41,7 @@ namespace zengine
 
 		void normalize();
 		float length()const;
+		void homogeneous();
 
 		vector4 operator - ()const{ return vector4(-x_, -y_, -z_, w_); }
 	public:

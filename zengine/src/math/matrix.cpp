@@ -6,6 +6,8 @@
 #include <math.h>
 #include <string.h>
 
+#include <DirectXMath.h>
+
 namespace zengine
 {
 	matrix::matrix()
@@ -221,8 +223,15 @@ namespace zengine
 
 	void matrix::setPerspectiveFovLH(float fovy, float aspect, float zn, float zf)
 	{
-		auto yscale = atanf(fovy / 2);
-		auto xscale = yscale / aspect;
+		//auto yscale = atanf(fovy / 2);
+		//auto xscale = yscale / aspect;
+
+		float    SinFov;
+		float    CosFov;
+		DirectX::XMScalarSinCos(&SinFov, &CosFov, 0.5f * fovy);
+		float yscale = CosFov / SinFov;
+		float xscale = yscale / aspect;
+		
 
 		_11 = xscale;
 		_12 = _13 = _14 = 0.0f;
