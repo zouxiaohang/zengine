@@ -1,6 +1,8 @@
 #include "matrix.hpp"
+#include "quaternion.hpp"
 #include "vector.hpp"
 
+#include <cassert>
 #include <math.h>
 #include <string.h>
 
@@ -35,6 +37,42 @@ namespace zengine
 	{
 		memset(mm_, 0, 16 * sizeof(float));
 		_11 = _22 = _33 = _44 = 1.0f;
+	}
+
+	float matrix::determinant()const
+	{
+		return _11 * (_22 * _33 - _23 * _32) +
+			_12 * (_23 * _31 - _21 * _33) +
+			_13 * (_21 * _32 - _22 * _31);
+	}
+
+	void matrix::inverse()
+	{
+		auto det = determinant();
+		assert(fabs(det) > 0.000001f);
+
+		auto oneOverDet = 1.0f / det;
+		auto r = *this;
+
+		_11 = (r._22 * r._33 - r._23 * r._32) * oneOverDet;
+		_12 = (r._13 * r._32 - r._12 * r._33) * oneOverDet;
+		_13 = (r._12 * r._23 - r._13 * r._22) * oneOverDet;
+		_14 = 0.0f;
+
+		_21 = (r._23 * r._31 - r._21 * r._33) * oneOverDet;
+		_22 = (r._11 * r._33 - r._13 * r._31) * oneOverDet;
+		_23 = (r._13 * r._21 - r._11 * r._23) * oneOverDet;
+		_24 = 0.0f;
+
+		_31 = (r._21 * r._32 - r._22 * r._31) * oneOverDet;
+		_32 = (r._12 * r._31 - r._11 * r._32) * oneOverDet;
+		_33 = (r._11 * r._22 - r._12 * r._21) * oneOverDet;
+		_34 = 0.0f;
+
+		_41 = -(r._41 * r._11 + r._42 * r._21 + r._43 * r._31);
+		_42 = -(r._41 * r._12 + r._42 * r._22 + r._43 * r._32);
+		_43 = -(r._41 * r._13 + r._42 * r._23 + r._43 * r._33);
+		_44 = 1.0f;
 	}
 
 	void matrix::setScale(const vector3& s)
@@ -84,6 +122,32 @@ namespace zengine
 		_41 = t.x_;
 		_42 = t.y_;
 		_43 = t.z_;
+	}
+
+	void matrix::fromQuaternion(const quaternion& q)
+	{
+		auto ww = 2.0f * q.w_;
+		auto xx = 2.0f * q.v_.x_;
+		auto yy = 2.0f * q.v_.y_;
+		auto zz = 2.0f * q.v_.z_;
+
+		_11 = 1.0f - yy * q.v_.y_ - zz * q.v_.z_;
+		_12 = xx * q.v_.y_ + ww * q.v_.z_;
+		_13 = xx * q.v_.z_ - ww * q.v_.x_;
+		_14 = 0.0f;
+
+		_21 = xx * q.v_.y_ - ww * q.v_.z_;
+		_22 = 1.0f - xx * q.v_.x_ - zz * q.v_.z_;
+		_23 = yy * q.v_.z_ + ww * q.v_.x_;
+		_24 = 0.0f;
+
+		_31 = xx * q.v_.z_ + ww * q.v_.y_;
+		_32 = yy * q.v_.z_ - ww * q.v_.x_;
+		_33 = 1.0f - xx * q.v_.x_ - yy * q.v_.y_;
+		_34 = 0.0f;
+
+		_41 = _42 = _43 = 0.0f;
+		_44 = 1.0f;
 	}
 
 	vector4 matrix::applyVector4(const vector4& v)

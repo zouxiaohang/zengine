@@ -5,6 +5,7 @@ namespace zengine
 {
 	class vector3;
 	class vector4;
+	class quaternion;
 
 	class matrix
 	{
@@ -18,12 +19,16 @@ namespace zengine
 		vector4 row(int r)const;
 
 		void identity();
+		float determinant()const;
+		void inverse();
 
 		void setScale(const vector3& s);
 		void setRotationX(float angle);
 		void setRotationY(float angle);
 		void setRotationZ(float angle);
 		void setTranslation(const vector3& t);
+
+		void fromQuaternion(const quaternion& q);
 
 		vector4 applyVector4(const vector4& v);
 	public:
