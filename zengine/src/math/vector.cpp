@@ -44,7 +44,7 @@ namespace zengine
 
 	vector3 vector3::crossProduct(const vector3& v)const
 	{
-		return vector3(y_ * v.z_ - z_ * v.y_, x_ * v.z_ - z_ * v.x_, x_ * v.y_ - y_ * v.x_);
+		return vector3(y_ * v.z_ - z_ * v.y_, z_ * v.x_ - x_ * v.z_, x_ * v.y_ - y_ * v.x_);
 	}
 
 	//v' = (this) * (1 - t) + v * t
@@ -83,6 +83,14 @@ namespace zengine
 		y_ = v.y_;
 		z_ = v.z_;
 		w_ = v.w_;
+	}
+
+	vector4::vector4(const vector3& v, float w)
+	{
+		x_ = v.x_;
+		y_ = v.y_;
+		z_ = v.z_;
+		w_ = w;
 	}
 
 	vector4& vector4::operator = (const vector4& v)

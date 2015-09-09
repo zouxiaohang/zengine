@@ -32,6 +32,10 @@ namespace zengine
 		quaternion toQuaternion()const;
 
 		vector4 applyVector4(const vector4& v);
+
+		void setLookAtLH(const vector3& eye, const vector3& at, const vector3& up);
+		void setPerspectiveLH(float w, float h, float zn, float zf);
+		void setPerspectiveFovLH(float fovy, float aspect, float zn, float zf);
 	public:
 		union
 		{

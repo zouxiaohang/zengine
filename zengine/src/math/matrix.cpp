@@ -172,6 +172,73 @@ namespace zengine
 		return ret;
 	}
 
+	void matrix::setLookAtLH(const vector3& eye, const vector3& at, const vector3& up)
+	{
+		auto lookDir = at - eye;
+		lookDir.normalize();
+		auto zaxis = lookDir;
+		auto xaxis = up.crossProduct(zaxis);
+		xaxis.normalize();
+		auto yaxis = zaxis.crossProduct(xaxis);
+
+		_11 = xaxis.x_;
+		_12 = yaxis.x_;
+		_13 = zaxis.x_;
+		_14 = 0.0f;
+
+		_21 = xaxis.y_;
+		_22 = yaxis.y_;
+		_23 = zaxis.y_;
+		_24 = 0.0f;
+
+		_31 = xaxis.z_;
+		_32 = yaxis.z_;
+		_33 = zaxis.z_;
+		_34 = 0.0f;
+
+		_41 = -(xaxis.dotProduct(eye));
+		_42 = -(yaxis.dotProduct(eye));
+		_43 = -(zaxis.dotProduct(eye));
+		_44 = 1.0f;
+	}
+
+	void matrix::setPerspectiveLH(float w, float h, float zn, float zf)
+	{
+		_11 = 2 * zn / w;
+		_12 = _13 = _14 = 0.0f;
+
+		_22 = 2 * zn / h;
+		_21 = _23 = _24 = 0.0f;
+
+		_31 = _32 = 0.0f;
+		_33 = zf / (zf - zn);
+		_34 = 1.0f;
+
+		_41 = _42 = 0.0f;
+		_43 = zn * zf / (zn - zf);
+		_44 = 1.0f;
+	}
+
+	void matrix::setPerspectiveFovLH(float fovy, float aspect, float zn, float zf)
+	{
+		auto yscale = atanf(fovy / 2);
+		auto xscale = yscale / aspect;
+
+		_11 = xscale;
+		_12 = _13 = _14 = 0.0f;
+
+		_22 = yscale;
+		_21 = _23 = _24 = 0.0f;
+
+		_31 = _32 = 0.0f;
+		_33 = zf / (zf - zn);
+		_34 = 1.0f;
+
+		_41 = _42 = 0.0f;
+		_43 = -zn * zf / (zf - zn);
+		_44 = 0.0f;
+	}
+
 	matrix operator *(float s, const matrix& mat)
 	{
 		matrix ret;
