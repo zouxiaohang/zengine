@@ -1,6 +1,7 @@
 #include "matrix.hpp"
 #include "quaternion.hpp"
 #include "vector.hpp"
+#include "math_util.hpp"
 
 #include <cassert>
 #include <math.h>
@@ -87,8 +88,9 @@ namespace zengine
 
 	void matrix::setRotationX(float angle)
 	{
-		auto cos = cosf(angle);
-		auto sin = sinf(angle);
+		auto radian = angleToRadian(angle);
+		auto cos = cosf(radian);
+		auto sin = sinf(radian);
 		identity();
 		_22 = cos;
 		_23 = sin;
@@ -98,8 +100,9 @@ namespace zengine
 
 	void matrix::setRotationY(float angle)
 	{
-		auto cos = cosf(angle);
-		auto sin = sinf(angle);
+		auto radian = angleToRadian(angle);
+		auto cos = cosf(radian);
+		auto sin = sinf(radian);
 		identity();
 		_11 = cos;
 		_13 = -sin;
@@ -109,8 +112,9 @@ namespace zengine
 
 	void matrix::setRotationZ(float angle)
 	{
-		auto cos = cosf(angle);
-		auto sin = sinf(angle);
+		auto radian = angleToRadian(angle);
+		auto cos = cosf(radian);
+		auto sin = sinf(radian);
 		identity();
 		_11 = cos;
 		_12 = sin;
@@ -222,7 +226,7 @@ namespace zengine
 		_44 = 1.0f;
 	}
 
-	void matrix::setPerspectiveFovLH(float fovy, float aspect, float zn, float zf)
+	void matrix::setPerspectiveFovLH(float fovy/*radian*/, float aspect, float zn, float zf)
 	{
 		auto yscale = 1.0f / tanf(fovy / 2);
 		auto xscale = yscale / aspect;
