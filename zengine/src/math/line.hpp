@@ -16,6 +16,7 @@ namespace zengine
 		float distance(const line& l)const;
 
 		bool isParallel(const line& l)const;
+		bool isInLine(const vector3& p)const;
 
 		const vector3& dir()const{ return dir_; }
 		const vector3& start()const{ return start_; }

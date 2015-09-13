@@ -23,6 +23,12 @@ namespace zengine
 		return floatEqual(dot, 0.0f);
 	}
 
+	bool line::isInLine(const vector3& p)const
+	{
+		auto dir = p - start_;
+		return isParallel(line(start_, dir));
+	}
+
 	float line::distance(const vector3& v)const
 	{
 		auto ll = v - start_;
@@ -38,11 +44,12 @@ namespace zengine
 			return distance(l.start_);
 
 		auto v1v2 = dir_.dotProduct(l.dir_);
+		auto oneOverv1v1 = 1.0f / (dir_.dotProduct(l.dir_) - 1);
 		auto s2s1v1 = (l.start_ - start_).dotProduct(dir_);
 		auto s2s1v2 = (l.start_ - start_).dotProduct(l.dir_);
 
-		auto t1 = -s2s1v1 + s2s1v2 * v1v2;
-		auto t2 = -s2s1v1 * v1v2 + s2s1v2;
+		auto t1 = -s2s1v1 + s2s1v2 * v1v2 * oneOverv1v1;
+		auto t2 = -s2s1v1 * v1v2 + s2s1v2 * oneOverv1v1;
 
 		return ((start_ + t1 * dir_) - (l.start_ + t2 * l.dir_)).length();
 	}
