@@ -16,7 +16,10 @@ namespace zengine
 		float distance(const line& l)const;
 
 		bool isParallel(const line& l)const;
-	public:
+
+		const vector3& dir()const{ return dir_; }
+		const vector3& start()const{ return start_; }
+	private:
 		vector3 start_;
 		vector3 dir_;//unit vector
 	};

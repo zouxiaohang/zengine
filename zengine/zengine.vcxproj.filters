@@ -22,6 +22,9 @@
     <ClCompile Include="src\math\line.cpp">
       <Filter>src\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\plane.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\vector.hpp">
@@ -37,6 +40,9 @@
       <Filter>src\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\line.hpp">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\plane.hpp">
       <Filter>src\math</Filter>
     </ClInclude>
   </ItemGroup>
