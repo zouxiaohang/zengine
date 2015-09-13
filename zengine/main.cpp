@@ -8,7 +8,7 @@
 #include "src\math\matrix.hpp"
 #include "src\math\math_util.hpp"
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 using namespace std;
 
@@ -65,7 +65,11 @@ int main(int argc, char** argv)
 	cout << "hello zengine" << endl;
 
 	zengine::matrix worldTransform;
-	worldTransform.setTranslation(zengine::vector3(1, 1, 0));
+	zengine::matrix translationTransform;
+	translationTransform.setTranslation(zengine::vector3(1, 1, 0));
+	zengine::matrix rotationTransform;
+	rotationTransform.setRotationZ(45);
+	worldTransform = rotationTransform * translationTransform;
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
 		cubeWorld[i] = worldTransform.applyVector4(zengine::vector4(cubeModel[i], 1.0f));
