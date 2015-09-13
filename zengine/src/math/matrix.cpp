@@ -6,7 +6,7 @@
 #include <math.h>
 #include <string.h>
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 namespace zengine
 {
@@ -182,6 +182,7 @@ namespace zengine
 		auto xaxis = up.crossProduct(zaxis);
 		xaxis.normalize();
 		auto yaxis = zaxis.crossProduct(xaxis);
+		yaxis.normalize();
 
 		_11 = xaxis.x_;
 		_12 = yaxis.x_;
@@ -223,14 +224,14 @@ namespace zengine
 
 	void matrix::setPerspectiveFovLH(float fovy, float aspect, float zn, float zf)
 	{
-		//auto yscale = atanf(fovy / 2);
-		//auto xscale = yscale / aspect;
+		auto yscale = 1.0f / tanf(fovy / 2);
+		auto xscale = yscale / aspect;
 
-		float    SinFov;
-		float    CosFov;
-		DirectX::XMScalarSinCos(&SinFov, &CosFov, 0.5f * fovy);
-		float yscale = CosFov / SinFov;
-		float xscale = yscale / aspect;
+		//float    SinFov;
+		//float    CosFov;
+		//DirectX::XMScalarSinCos(&SinFov, &CosFov, 0.5f * fovy);
+		//float yscale = CosFov / SinFov;
+		//float xscale = yscale / aspect;
 		
 
 		_11 = xscale;
