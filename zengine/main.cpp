@@ -12,17 +12,17 @@
 
 using namespace std;
 
-const int MODELSIZE = 4;
+const int MODELSIZE = 3;
 zengine::vector3 cubeModel[MODELSIZE] = {
-	//{0,0,0},
-	//{3, 0, 0},
-	//{0, 3, 0}
-	{ 10, 10, 10 },
-	{ -10, 10, 10 },
+	{0,0,0},
+	{10, 0, 0},
+	{0, 10, 0}
+	//{ 10, 10, 10 },
+	//{ -10, 10, 10 },
 	//{ -10, 10, -10 },
 	//{ 10, 10, -10 },
-	{ 10, -10, 10 },
-	{ -10, -10, 10 },
+	//{ 10, -10, 10 },
+	//{ -10, -10, 10 },
 	//{ -10, -10, -10 },
 	//{ 10, -10, -10 }
 };
@@ -41,19 +41,26 @@ namespace
 		glLoadIdentity();
 		glOrtho(0, 640, 0, 360, -1, 1);
 	}
+	void drawLine(const zengine::vector3& p1, const zengine::vector3& p2)
+	{
+		glLineWidth(2.0f);
+		glBegin(GL_LINE_STRIP); // set the Mode
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(p1.x_, p1.y_, p1.z_);//
+		glVertex3f(p2.x_, p2.y_, p2.z_);
+		glEnd();
+		//glFlush();
+
+	}
 	void display(void)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glColor3f(1.0f, 0.0f, 0.0f);
-		glRasterPos2f(0.4f, 0.5f);
-		glPointSize(5.0f);
-		glBegin(GL_POINTS);
-		for (const auto& point : cubeScreen)
+		for (int i = 0; i != MODELSIZE - 1; ++i)
 		{
-			cout << point.x_ << " " << point.y_ << " " << point.z_ << endl;
-			glVertex2f(point.x_, point.y_);
+			drawLine(cubeScreen[i], cubeScreen[i + 1]);
 		}
-		glEnd();
+		drawLine(cubeScreen[MODELSIZE - 1], cubeScreen[0]);
 		glFlush();
 	}
 }
@@ -69,7 +76,7 @@ int main(int argc, char** argv)
 	zengine::matrix worldTransform;
 
 	scale.setScale(zengine::vector3(1, 1, 1));
-	translation.setTranslation(zengine::vector3(1, 1, 0));
+	translation.setTranslation(zengine::vector3(0, -5, 0));
 	rotation.setRotationZ(45);
 	worldTransform = scale * rotation * translation;
 	for (int i = 0; i != MODELSIZE; ++i)
