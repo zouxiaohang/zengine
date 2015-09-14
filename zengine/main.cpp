@@ -31,6 +31,7 @@ zengine::vector4 cubeWorld[MODELSIZE];
 zengine::vector4 cubeView[MODELSIZE];
 zengine::vector4 cubeProj[MODELSIZE];
 zengine::vector4 cubeNDC[MODELSIZE];
+zengine::vector3 cubeScreen[MODELSIZE];
 
 namespace
 {
@@ -47,11 +48,8 @@ namespace
 		glRasterPos2f(0.4f, 0.5f);
 		glPointSize(5.0f);
 		glBegin(GL_POINTS);
-		for (auto& p : cubeNDC)
+		for (const auto& point : cubeScreen)
 		{
-			auto point = p;
-			point.x_ = ((point.x_ + 1) / 2) * 640;
-			point.y_ = ((1 - point.y_) / 2) * 360;
 			cout << point.x_ << " " << point.y_ << " " << point.z_ << endl;
 			glVertex2f(point.x_, point.y_);
 		}
@@ -64,18 +62,22 @@ int main(int argc, char** argv)
 {
 	cout << "hello zengine" << endl;
 
+	// object space to world space
+	zengine::matrix scale;
+	zengine::matrix rotation;
+	zengine::matrix translation;
 	zengine::matrix worldTransform;
-	zengine::matrix translationTransform;
-	translationTransform.setTranslation(zengine::vector3(1, 1, 0));
-	zengine::matrix rotationTransform;
-	rotationTransform.setRotationZ(45);
-	worldTransform = rotationTransform * translationTransform;
+
+	scale.setScale(zengine::vector3(1, 1, 1));
+	translation.setTranslation(zengine::vector3(1, 1, 0));
+	rotation.setRotationZ(45);
+	worldTransform = scale * rotation * translation;
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
 		cubeWorld[i] = worldTransform.applyVector4(zengine::vector4(cubeModel[i], 1.0f));
 	}
 
-	
+	//wolrd space to eye space
 	zengine::matrix viewTransform;
 	zengine::vector3 eye(0, 0, -10);
 	zengine::vector3 focus(0, 0, 0);
@@ -86,6 +88,7 @@ int main(int argc, char** argv)
 		cubeView[i] = viewTransform.applyVector4(cubeWorld[i]);
 	}
 	
+	//eye space to projection space
 	zengine::matrix projTransform;
 	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), 640.0f / 360, 0.1f, 1.0f);
 	for (int i = 0; i != MODELSIZE; ++i)
@@ -93,11 +96,21 @@ int main(int argc, char** argv)
 		cubeProj[i] = projTransform.applyVector4(cubeView[i]);
 	}
 
+	//to NDC
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
 		cubeNDC[i] = cubeProj[i];
-		//NDC
 		cubeNDC[i].homogeneous();
+	}
+
+	//to screen space
+	for (int i = 0; i != MODELSIZE; ++i)
+	{
+		const auto& point = cubeNDC[i];
+		cubeScreen[i].x_ = ((point.x_ + 1) / 2) * 640;
+		cubeScreen[i].y_ = ((1 - point.y_) / 2) * 360;
+		//point.x_ = point.x_ * 640 + 640 / 2;
+		//point.y_ = -point.y_ * 360 + 360 / 2;
 	}
 
 	glutInit(&argc, argv);
