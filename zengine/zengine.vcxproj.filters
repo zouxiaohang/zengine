@@ -7,6 +7,9 @@
     <Filter Include="src\math">
       <UniqueIdentifier>{855c7cbf-6468-463f-a582-f9984d3e8bd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{7c756bec-431a-4672-a1fd-bd3352b418a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -24,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="src\math\plane.cpp">
       <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\window.cpp">
+      <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="src\math\plane.hpp">
       <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\window.hpp">
+      <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,19 +1,20 @@
 #include<iostream>
 
-#include <Windows.h>
-#include <gl/GL.h>
-#include <gl/glut.h>
-
 #include "src\math\vector.hpp"
 #include "src\math\matrix.hpp"
 #include "src\math\math_util.hpp"
+#include "src\core\window.hpp"
+
+#include <Windows.h>
+#include <gl/GL.h>
+#include <gl/glut.h>
 
 //#include <DirectXMath.h>
 
 using namespace std;
 
 const int MODELSIZE = 3;
-zengine::vector3 cubeModel[MODELSIZE] = {
+zengine::vector3 model[MODELSIZE] = {
 	{0,0,0},
 	{10, 0, 0},
 	{0, 10, 0}
@@ -27,11 +28,11 @@ zengine::vector3 cubeModel[MODELSIZE] = {
 	//{ 10, -10, -10 }
 };
 
-zengine::vector4 cubeWorld[MODELSIZE];
-zengine::vector4 cubeView[MODELSIZE];
-zengine::vector4 cubeProj[MODELSIZE];
-zengine::vector4 cubeNDC[MODELSIZE];
-zengine::vector3 cubeScreen[MODELSIZE];
+zengine::vector4 modelWorld[MODELSIZE];
+zengine::vector4 modelView[MODELSIZE];
+zengine::vector4 modelProj[MODELSIZE];
+zengine::vector4 modelNDC[MODELSIZE];
+zengine::vector3 modelScreen[MODELSIZE];
 
 namespace
 {
@@ -44,13 +45,12 @@ namespace
 	void drawLine(const zengine::vector3& p1, const zengine::vector3& p2)
 	{
 		glLineWidth(2.0f);
-		glBegin(GL_LINE_STRIP); // set the Mode
+		glBegin(GL_LINES);
 		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(p1.x_, p1.y_, p1.z_);//
+		glVertex3f(p1.x_, p1.y_, p1.z_);
 		glVertex3f(p2.x_, p2.y_, p2.z_);
 		glEnd();
 		//glFlush();
-
 	}
 	void display(void)
 	{
@@ -58,9 +58,9 @@ namespace
 		glColor3f(1.0f, 0.0f, 0.0f);
 		for (int i = 0; i != MODELSIZE - 1; ++i)
 		{
-			drawLine(cubeScreen[i], cubeScreen[i + 1]);
+			drawLine(modelScreen[i], modelScreen[i + 1]);
 		}
-		drawLine(cubeScreen[MODELSIZE - 1], cubeScreen[0]);
+		drawLine(modelScreen[MODELSIZE - 1], modelScreen[0]);
 		glFlush();
 	}
 }
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 	worldTransform = scale * rotation * translation;
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
-		cubeWorld[i] = worldTransform.applyVector4(zengine::vector4(cubeModel[i], 1.0f));
+		modelWorld[i] = worldTransform.applyVector4(zengine::vector4(model[i], 1.0f));
 	}
 
 	//wolrd space to eye space
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	viewTransform.setLookAtLH(eye, focus, up);
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
-		cubeView[i] = viewTransform.applyVector4(cubeWorld[i]);
+		modelView[i] = viewTransform.applyVector4(modelWorld[i]);
 	}
 	
 	//eye space to projection space
@@ -100,34 +100,28 @@ int main(int argc, char** argv)
 	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), 640.0f / 360, 0.1f, 1.0f);
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
-		cubeProj[i] = projTransform.applyVector4(cubeView[i]);
+		modelProj[i] = projTransform.applyVector4(modelView[i]);
 	}
 
 	//to NDC
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
-		cubeNDC[i] = cubeProj[i];
-		cubeNDC[i].homogeneous();
+		modelNDC[i] = modelProj[i];
+		modelNDC[i].homogeneous();
 	}
 
 	//to screen space
 	for (int i = 0; i != MODELSIZE; ++i)
 	{
-		const auto& point = cubeNDC[i];
-		cubeScreen[i].x_ = ((point.x_ + 1) / 2) * 640;
-		cubeScreen[i].y_ = ((1 - point.y_) / 2) * 360;
+		const auto& point = modelNDC[i];
+		modelScreen[i].x_ = ((point.x_ + 1) / 2) * 640;
+		modelScreen[i].y_ = ((1 - point.y_) / 2) * 360;
 		//point.x_ = point.x_ * 640 + 640 / 2;
 		//point.y_ = -point.y_ * 360 + 360 / 2;
 	}
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(640, 360); 
-	glutInitWindowPosition(400, 250);
-	glutCreateWindow("hello zengine");
-	init();
-	glutDisplayFunc(display); 
-	glutMainLoop();
+	zengine::window window(argc, argv, "zengine sample", 640.0f, 360.0f, -1.0f, 1.0f);
+	window.run(display);
 
 	system("pause");
 	return 0;
