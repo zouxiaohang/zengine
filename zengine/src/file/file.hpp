@@ -27,11 +27,19 @@ namespace zengine
 	private:
 		void close();
 		std::vector<std::string> split(const std::string& verticeLine, const std::string& delimiter = " ")const;
+
+	private:
+		struct header
+		{
+			header(std::size_t nv = 0) :numOfVertices_(nv){}
+			std::size_t numOfVertices_;
+		};
 	private:
 		std::ifstream ifs_;
 		std::vector<vector3> vertices_;
+		header header_;
 	private:
-		static const char * const header_;
+		static const char * const headerMagic_;
 	};
 }
 

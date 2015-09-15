@@ -14,27 +14,42 @@
 //#include <DirectXMath.h>
 using namespace std;
 
+const float windowWidth = 640.0f;
+const float windowHeight = 360.0f;
+const zengine::vector3 windowMid = zengine::vector3(windowWidth / 2, windowHeight / 2, 0.0f);
+
+zengine::modelPtr model;
+
 namespace
 {
-	void drawLine(const zengine::vector3& p1, const zengine::vector3& p2)
-	{
+	const zengine::vector4 red(1.0f, 0.0f, 0.0f, 1.0f);
+	const zengine::vector4 green(0.0f, 1.0f, 0.0f, 1.0f);
+	const zengine::vector4 blue(0.0f, 0.0f, 1.0f, 1.0f);
+	const zengine::vector4 yellow(1.0f, 1.0f, 0.0f, 1.0f);
+
+	auto drawLine = [](const zengine::vector3& p1, 
+						const zengine::vector3& p2, 
+						const zengine::vector4& color){
 		glLineWidth(2.0f);
 		glBegin(GL_LINES);
-		glColor3f(1.0f, 0.0f, 0.0f);
+		glColor3f(color.x_, color.y_, color.z_);
 		glVertex3f(p1.x_, p1.y_, p1.z_);
 		glVertex3f(p2.x_, p2.y_, p2.z_);
 		glEnd();
-		//glFlush();
-	}
+	};
+	auto drawAxis = []{
+		drawLine(windowMid, zengine::vector3(windowWidth, windowMid.y_, 0.0f), red);
+		drawLine(windowMid, zengine::vector3(windowMid.x_, windowHeight, 0.0f), green);
+		auto v4 = zengine::vector4((windowWidth - windowHeight) / 2,  0, 0.0f, 1.0f);
+		drawLine(windowMid, zengine::vector3(v4.x_, v4.y_, v4.z_), blue);
+	};
 }
-
-zengine::modelPtr model;
 
 int main(int argc, char** argv)
 {
 	cout << "hello zengine" << endl;
 
-	zengine::window window(argc, argv, "zengine sample", 640.0f, 360.0f, -1.0f, 1.0f);
+	zengine::window window(argc, argv, "zengine sample", windowWidth, windowHeight, -1.0f, 1.0f);
 
 	zengine::file file("resource/triangle.zimage");
 	model = file.getModel();
@@ -58,7 +73,7 @@ int main(int argc, char** argv)
 
 	//eye space to projection space
 	zengine::matrix projTransform;
-	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), 640.0f / 360, 0.1f, 1.0f);
+	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), window.width() / window.height(), 1.0f, 1000.0f);
 
 	model->transform(worldTransform, zengine::model::WORLD_TRANSFORM);
 	model->transform(viewTransform, zengine::model::VIEW_TRANDFORM);
@@ -70,12 +85,13 @@ int main(int argc, char** argv)
 	auto display = []{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glColor3f(1.0f, 0.0f, 0.0f);
+		drawAxis();
 		const auto& screen = model->modelInScreen();
 		for (int i = 0; i != screen.size() - 1; ++i)
 		{
-			drawLine(screen[i], screen[i + 1]);
+			drawLine(screen[i], screen[i + 1], yellow);
 		}
-		drawLine(screen[screen.size() - 1], screen[0]);
+		drawLine(screen[screen.size() - 1], screen[0], yellow);
 		glFlush();
 	};
 

@@ -20,7 +20,7 @@ namespace zengine
 			return vector3(std::stof(strX), std::stof(strY), std::stof(strZ));
 		}
 	}
-	const char * const file::header_ = "zengine image";
+	const char * const file::headerMagic_ = "zengine image";
 
 	file::file(const std::string& filePath)
 	{
@@ -33,21 +33,21 @@ namespace zengine
 
 		std::string fileHeader;
 		std::getline(ifs_, fileHeader);
-		assert(fileHeader == header_);
+		assert(fileHeader == headerMagic_);
 
 		std::string strVerticeNum, verticesLine;
 		std::getline(ifs_, strVerticeNum);
-		auto verticeNum = atoi(strVerticeNum.c_str());
-		//vertices_.resize(verticeNum);
-		
-		while (std::getline(ifs_, verticesLine) && verticeNum--)
+		header_.numOfVertices_ = atoi(strVerticeNum.c_str());
+
+		//parse vertices data
 		{
-			//std::stringstream ss(verticesLine);
+			std::getline(ifs_, verticesLine);
 			auto vertices = split(verticesLine);
 			for (const auto& v : vertices)
 			{
 				vertices_.emplace_back(toVector3(v));
 			}
+			assert(header_.numOfVertices_ == vertices_.size());
 		}
 	}
 
@@ -58,11 +58,11 @@ namespace zengine
 		auto curr = verticeLine.find(" ");
 		while (curr != std::string::npos)
 		{
-			vs.emplace_back(verticeLine.substr(prev, curr));
+			vs.emplace_back(verticeLine.substr(prev, curr - prev));
 			prev = curr + 1;
 			curr = verticeLine.find(" ", prev);
 		}
-		vs.emplace_back(verticeLine.substr(prev, verticeLine.size()));
+		vs.emplace_back(verticeLine.substr(prev, verticeLine.size() - prev));
 		return vs;
 	}
 
