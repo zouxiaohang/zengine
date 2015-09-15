@@ -28,7 +28,7 @@ namespace zengine
 		void fromQuaternion(const quaternion& q);
 		quaternion toQuaternion()const;
 
-		vector4 applyVector4(const vector4& v);
+		vector4 applyVector4(const vector4& v)const;
 
 		void setLookAtLH(const vector3& eye, const vector3& at, const vector3& up);
 		void setPerspectiveLH(float w, float h, float zn, float zf);

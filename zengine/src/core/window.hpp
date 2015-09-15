@@ -19,8 +19,13 @@ namespace zengine
 		}
 
 		void run(void(*display)(void));
+
+		float width()const{ return width_; }
+		float height()const{ return height_; }
+
 	private:
 		void init(int argc, char **argv)const;
+
 	private:
 		float width_;
 		float height_;

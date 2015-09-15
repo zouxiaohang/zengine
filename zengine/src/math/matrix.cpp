@@ -168,7 +168,7 @@ namespace zengine
 		return q;
 	}
 
-	vector4 matrix::applyVector4(const vector4& v)
+	vector4 matrix::applyVector4(const vector4& v)const
 	{
 		vector4 ret;
 		ret.x_ = v.x_ * _11 + v.y_ * _21 + v.z_ * _31 + v.w_ * _41;
@@ -180,9 +180,8 @@ namespace zengine
 
 	void matrix::setLookAtLH(const vector3& eye, const vector3& at, const vector3& up)
 	{
-		auto lookDir = at - eye;
-		lookDir.normalize();
-		auto zaxis = lookDir;
+		auto zaxis = at - eye;
+		zaxis.normalize();
 		auto xaxis = up.crossProduct(zaxis);
 		xaxis.normalize();
 		auto yaxis = zaxis.crossProduct(xaxis);

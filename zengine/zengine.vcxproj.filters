@@ -10,6 +10,12 @@
     <Filter Include="src\core">
       <UniqueIdentifier>{7c756bec-431a-4672-a1fd-bd3352b418a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\file">
+      <UniqueIdentifier>{365a2b57-a94c-4185-9e53-fa1b4194b2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{c431630a-ce1e-4d4d-b845-730b84924a26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -29,6 +35,12 @@
       <Filter>src\math</Filter>
     </ClCompile>
     <ClCompile Include="src\core\window.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\file\file.cpp">
+      <Filter>src\file</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\model.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -52,6 +64,12 @@
       <Filter>src\math</Filter>
     </ClInclude>
     <ClInclude Include="src\core\window.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\file\file.hpp">
+      <Filter>src\file</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\model.hpp">
       <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>
