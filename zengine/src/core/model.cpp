@@ -67,7 +67,21 @@ namespace zengine
 		for (int i = 0; i != modelProj_.size(); ++i)
 		{
 			const auto& point = modelProj_[i];
+			// screen:
+			//  (0,0)------------------>x
+			//		|
+			//		|
+			//		|
+			//		|
+			//	   y\/
+
+			// x - (-1)     x'
+			//---------- = -------
+			// 1 - (-1)     width
 			modelScreen_[i].x_ = ((point.x_ + 1) / 2) * 640;
+			// 1 - y		y'
+			//---------- = --------  ps: screen in y is inverse, so we write:(1 - y)
+			// 1 - (-1)		height
 			modelScreen_[i].y_ = ((1 - point.y_) / 2) * 360;
 		}
 	}
