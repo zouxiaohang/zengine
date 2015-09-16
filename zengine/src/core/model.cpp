@@ -41,13 +41,23 @@ namespace zengine
 			for (const auto& v : vertices_)
 			{
 				auto v4 = vector4(v, 1.0f);
-				v4 = tm.applyVector4(v4);
-				v4.homogeneous();
+				v4 = tm.applyVector4(v4);//to clip space
+				//v4.homogeneous();//to NDC space
 				modelProj_.emplace_back(v4);
 			}
 			break;
 		default:
 			break;
+		}
+	}
+
+	void model::transformToNDC()
+	{
+		for (const auto& v : modelProj_)
+		{
+			auto v4 = v;
+			v4.homogeneous();
+			modelNDC_.emplace_back(v4);
 		}
 	}
 

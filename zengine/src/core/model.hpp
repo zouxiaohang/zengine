@@ -29,8 +29,10 @@ namespace zengine
 		explicit model(const verticeArrayType& v);
 
 		void transform(const matrix& tm, transformType type);
+		void transformToNDC();
 		void transformToScreen(float width, float height);
 
+		verticePositionArray modelInNDC()const{ return modelNDC_; }
 		verticeArrayType modelInScreen()const{ return modelScreen_; }
 
 	private:
@@ -38,7 +40,7 @@ namespace zengine
 		verticePositionArray modelWorld_;
 		verticePositionArray modelView_;
 		verticePositionArray modelProj_;
-		//verticePositionArray modelNDC;
+		verticePositionArray modelNDC_;
 		verticeArrayType modelScreen_;
 	};
 

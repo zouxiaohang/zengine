@@ -82,6 +82,7 @@ int main(int argc, char** argv)
 	model->transform(projTransform, zengine::model::PROJECTION_TRANSFORM);
 	//auto mvp = worldTransform * viewTransform * projTransform;
 	//model->transform(mvp, zengine::model::WORLD_VIEW_PROJECT_TRANSFORM);
+	model->transformToNDC();
 	model->transformToScreen(window.width(), window.height());
 
 	auto displayCube = []{
