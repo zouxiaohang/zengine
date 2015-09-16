@@ -19,6 +19,9 @@
     <Filter Include="resource">
       <UniqueIdentifier>{0b50139b-8f0f-4b4f-adb1-cbe4c88d0780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="screenshots">
+      <UniqueIdentifier>{82b5a1e3-ac56-42f3-a894-b50b24644318}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -92,5 +95,10 @@
     <None Include="resource\cube.zimage">
       <Filter>resource</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="screenshots\cube.png">
+      <Filter>screenshots</Filter>
+    </Image>
   </ItemGroup>
 </Project>

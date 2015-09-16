@@ -39,6 +39,9 @@
     <None Include="resource\object.zimage" />
     <None Include="resource\triangle.zimage" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="screenshots\cube.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0CAB7215-7120-4A43-8553-3B96CC52422B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
