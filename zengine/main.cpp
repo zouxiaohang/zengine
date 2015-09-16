@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 
 #include "src\math\vector.hpp"
 #include "src\math\matrix.hpp"
@@ -30,7 +31,7 @@ namespace
 	auto drawLine = [](const zengine::vector3& p1, 
 						const zengine::vector3& p2, 
 						const zengine::vector4& color){
-		glLineWidth(2.0f);
+		glLineWidth(1.0f);
 		glBegin(GL_LINES);
 		glColor3f(color.x_, color.y_, color.z_);
 		glVertex3f(p1.x_, p1.y_, p1.z_);
@@ -51,18 +52,19 @@ int main(int argc, char** argv)
 
 	zengine::window window(argc, argv, "zengine sample", windowWidth, windowHeight, -1.0f, 1.0f);
 
-	zengine::file file("resource/triangle.zimage");
+	zengine::file file("resource/cube.zimage");
 	model = file.getModel();
 
 	// object space to world space
 	zengine::matrix scale;
-	zengine::matrix rotation;
+	zengine::matrix rotationY, rotationX;
 	zengine::matrix translation;
 	zengine::matrix worldTransform;
 	scale.setScale(zengine::vector3(1, 1, 1));
-	translation.setTranslation(zengine::vector3(0, -5, 0));
-	rotation.setRotationZ(45);
-	worldTransform = scale * rotation * translation;
+	translation.setTranslation(zengine::vector3(0, -2, 1));
+	rotationY.setRotationY(-60);
+	rotationX.setRotationX(15);
+	worldTransform = scale * rotationY * rotationX * translation;
 
 	//wolrd space to eye space
 	zengine::matrix viewTransform;
@@ -73,7 +75,7 @@ int main(int argc, char** argv)
 
 	//eye space to projection space
 	zengine::matrix projTransform;
-	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), window.width() / window.height(), 1.0f, 1000.0f);
+	projTransform.setPerspectiveFovLH(zengine::angleToRadian(90), window.width() / window.height(), 0.1f, 1000.0f);
 
 	model->transform(worldTransform, zengine::model::WORLD_TRANSFORM);
 	model->transform(viewTransform, zengine::model::VIEW_TRANDFORM);
@@ -82,20 +84,24 @@ int main(int argc, char** argv)
 	//model->transform(mvp, zengine::model::WORLD_VIEW_PROJECT_TRANSFORM);
 	model->transformToScreen(window.width(), window.height());
 
-	auto display = []{
+	auto displayCube = []{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glColor3f(1.0f, 0.0f, 0.0f);
 		drawAxis();
 		const auto& screen = model->modelInScreen();
-		for (int i = 0; i != screen.size() - 1; ++i)
+		const std::pair<int, int> indices[] = {
+			{ 0, 3 }, { 0, 1 }, { 0, 4 }, { 1, 2 },
+			{ 1, 5 }, { 2, 3 }, { 2, 6 }, { 3,7 },
+			{ 4, 5 }, { 4, 7 }, { 5, 6 }, { 6, 7 },
+		};
+		for (const auto&pair : indices)
 		{
-			drawLine(screen[i], screen[i + 1], yellow);
+			drawLine(screen[pair.first], screen[pair.second], yellow);
 		}
-		drawLine(screen[screen.size() - 1], screen[0], yellow);
 		glFlush();
 	};
 
-	window.run(display);
+	window.run(displayCube);
 
 	system("pause");
 	return 0;

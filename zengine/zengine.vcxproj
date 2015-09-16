@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\core\model.cpp" />
+    <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\file\file.cpp" />
     <ClCompile Include="src\math\line.cpp" />
@@ -23,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\model.hpp" />
+    <ClInclude Include="src\core\texture.hpp" />
     <ClInclude Include="src\core\window.hpp" />
     <ClInclude Include="src\file\file.hpp" />
     <ClInclude Include="src\math\line.hpp" />
@@ -31,6 +33,11 @@
     <ClInclude Include="src\math\plane.hpp" />
     <ClInclude Include="src\math\quaternion.hpp" />
     <ClInclude Include="src\math\vector.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\cube.zimage" />
+    <None Include="resource\object.zimage" />
+    <None Include="resource\triangle.zimage" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0CAB7215-7120-4A43-8553-3B96CC52422B}</ProjectGuid>

@@ -16,6 +16,9 @@
     <Filter Include="tools">
       <UniqueIdentifier>{c431630a-ce1e-4d4d-b845-730b84924a26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{0b50139b-8f0f-4b4f-adb1-cbe4c88d0780}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -41,6 +44,9 @@
       <Filter>src\file</Filter>
     </ClCompile>
     <ClCompile Include="src\core\model.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\texture.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,5 +78,19 @@
     <ClInclude Include="src\core\model.hpp">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\texture.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\triangle.zimage">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\object.zimage">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\cube.zimage">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
 </Project>
