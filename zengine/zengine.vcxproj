@@ -23,6 +23,7 @@
     <ClCompile Include="src\math\vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\color.hpp" />
     <ClInclude Include="src\core\model.hpp" />
     <ClInclude Include="src\core\texture.hpp" />
     <ClInclude Include="src\core\window.hpp" />

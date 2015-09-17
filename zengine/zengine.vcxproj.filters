@@ -84,6 +84,9 @@
     <ClInclude Include="src\core\texture.hpp">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\color.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\triangle.zimage">

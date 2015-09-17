@@ -35,6 +35,8 @@ namespace zengine
 		verticePositionArray modelInNDC()const{ return modelNDC_; }
 		verticeArrayType modelInScreen()const{ return modelScreen_; }
 
+		void clear();
+
 	private:
 		verticeArrayType vertices_;
 		verticePositionArray modelWorld_;

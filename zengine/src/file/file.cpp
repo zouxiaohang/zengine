@@ -37,15 +37,19 @@ namespace zengine
 
 		std::string strVerticeNum, verticesLine;
 		std::getline(ifs_, strVerticeNum);
-		header_.numOfVertices_ = atoi(strVerticeNum.c_str());
+		auto vn = atoi(strVerticeNum.c_str());
+		header_.numOfVertices_ = vn;
 
 		//parse vertices data
 		{
-			std::getline(ifs_, verticesLine);
-			auto vertices = split(verticesLine);
-			for (const auto& v : vertices)
+			while (vn--)
 			{
-				vertices_.emplace_back(toVector3(v));
+				std::getline(ifs_, verticesLine);
+				auto vertices = split(verticesLine);
+				for (const auto& v : vertices)
+				{
+					vertices_.emplace_back(toVector3(v));
+				}
 			}
 			assert(header_.numOfVertices_ == vertices_.size());
 		}

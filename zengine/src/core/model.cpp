@@ -76,13 +76,23 @@ namespace zengine
 			//	   y\/
 
 			// x - (-1)     x'
-			//---------- = -------
-			// 1 - (-1)     width
-			modelScreen_[i].x_ = ((point.x_ + 1) / 2) * 640;
+			//---------- = -----------
+			// 1 - (-1)     width - 1
+			modelScreen_[i].x_ = ((point.x_ + 1) / 2) * (width - 1);
 			// 1 - y		y'
-			//---------- = --------  ps: screen in y is inverse, so we write:(1 - y)
-			// 1 - (-1)		height
-			modelScreen_[i].y_ = ((1 - point.y_) / 2) * 360;
+			//---------- = ------------  ps: screen in y is inverse, so we write:(1 - y)
+			// 1 - (-1)		height - 1
+			modelScreen_[i].y_ = ((1 - point.y_) / 2) * (heigth - 1);
+			modelScreen_[i].z_ = point.z_;
 		}
+	}
+
+	void model::clear()
+	{
+		modelWorld_.clear();
+		modelView_.clear();
+		modelProj_.clear(); 
+		modelNDC_.clear();
+		modelScreen_.clear();
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
+#include "model.hpp"
+
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/glut.h>
@@ -18,10 +20,13 @@ namespace zengine
 			init(argc, argv);
 		}
 
-		void run(void(*display)(void));
+		void update();
+		void run();
 
 		float width()const{ return width_; }
 		float height()const{ return height_; }
+
+		void addModel(modelPtr model){ model_ = model; }
 
 	private:
 		void init(int argc, char **argv)const;
@@ -33,6 +38,7 @@ namespace zengine
 		float far_;
 		const char* title_;
 		//std::function<void()> display_;
+		modelPtr model_;
 	};
 }
 
