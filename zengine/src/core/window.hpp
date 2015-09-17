@@ -7,18 +7,16 @@
 #include <gl/GL.h>
 #include <gl/glut.h>
 
-//#include <functional>
+#include <algorithm>
+#include <numeric>
 
 namespace zengine
 {
 	class window
 	{
 	public:
-		window(int argc, char** argv, const char * title, float width, float height, float fnear = -1, float ffar = 1):
-			width_(width), height_(height), near_(fnear), far_(ffar), title_(title)
-		{
-			init(argc, argv);
-		}
+		window(int argc, char** argv, const char * title, float width, float height, float fnear = -1, float ffar = 1);
+		~window();
 
 		void update();
 		void run();
@@ -27,6 +25,8 @@ namespace zengine
 		float height()const{ return height_; }
 
 		void addModel(modelPtr model){ model_ = model; }
+		void setZbuffer(float w, float h, float v);
+		void clearZbuffer();
 
 	private:
 		void init(int argc, char **argv)const;
@@ -39,6 +39,7 @@ namespace zengine
 		const char* title_;
 		//std::function<void()> display_;
 		modelPtr model_;
+		float **zbuffer_;
 	};
 }
 
