@@ -6,6 +6,7 @@
 #include "../math/line.hpp"
 
 std::unique_ptr<zengine::window> WINDOW;
+zengine::modelPtr MODEL;
 
 namespace
 {
@@ -44,8 +45,6 @@ namespace
 
 namespace
 {
-	zengine::modelPtr MODEL;
-
 	auto drawPixel = [](const zengine::vector3& p, const zengine::vector4& color)
 	{
 		glBegin(GL_POINTS);
@@ -56,12 +55,6 @@ namespace
 	auto drawLine = [](const zengine::vector3& p1,
 						const zengine::vector3& p2,
 						const zengine::vector4& color){
-		//glLineWidth(1.0f);
-		//glBegin(GL_LINES);
-		//glColor3f(color.x_, color.y_, color.z_);
-		//glVertex3f(p1.x_, p1.y_, p1.z_);
-		//glVertex3f(p2.x_, p2.y_, p2.z_);
-		//glEnd();
 		auto start = p1, end = p2;
 		auto xrange = std::fabs(end.x_ - start.x_);
 		auto yrange = std::fabs(end.y_ - start.y_);
@@ -88,6 +81,14 @@ namespace
 			}
 		}
 	};
+	auto drawTriangle = [](const zengine::vector3& p1, 
+							const zengine::vector3& p2, 
+							const zengine::vector3& p3, 
+							const zengine::vector4& color){
+		drawLine(p1, p2, color);
+		drawLine(p2, p3, color);
+		drawLine(p3, p1, color);
+	};
 	float zinterpolate(float z1, float z2, float t)
 	{
 		return z1 * (1 - t) + z2 * t;
@@ -98,11 +99,6 @@ namespace
 		MODEL->clear();
 		WINDOW->update();
 		const auto& screen = MODEL->modelInScreen();
-		const std::pair<int, int> indicesPairs[] = {
-			{ 0, 3 }, { 0, 1 }, { 0, 4 }, { 1, 2 },
-			{ 1, 5 }, { 2, 3 }, { 2, 6 }, { 3, 7 },
-			{ 4, 5 }, { 4, 7 }, { 5, 6 }, { 6, 7 },
-		};
 		//// fill zbuffer
 		//for (const auto& pair : indicesPairs)
 		//{
@@ -121,9 +117,24 @@ namespace
 		//	}
 		//}
 
-		for (const auto& pair : indicesPairs)
+		//const std::pair<int, int> indicesPairs[] = {
+		//	{ 0, 3 }, { 0, 1 }, { 0, 4 }, { 1, 2 },
+		//	{ 1, 5 }, { 2, 3 }, { 2, 6 }, { 3, 7 },
+		//	{ 4, 5 }, { 4, 7 }, { 5, 6 }, { 6, 7 },
+		//};
+		//for (const auto& pair : indicesPairs)
+		//{
+		//	drawLine(screen[pair.first], screen[pair.second], zengine::white);
+		//}
+
+		const std::vector<int> indicesVectors[] = {
+			{ 0, 1, 3 }, { 1, 2, 3 }, { 1, 3, 4 }, { 3, 4, 7 }, 
+			{ 2, 3, 7 }, { 2, 6, 7 }, { 1, 2, 5 }, { 2, 5, 6 }, 
+			{ 0, 1, 4 }, { 1, 4, 5 }, { 4, 5, 7 }, { 5, 6, 7 },
+		};
+		for (const auto& v3 : indicesVectors)
 		{
-			drawLine(screen[pair.first], screen[pair.second], zengine::white);
+			drawTriangle(screen[v3[0]], screen[v3[1]], screen[v3[2]], zengine::white);
 		}
 		glFlush();
 	};
