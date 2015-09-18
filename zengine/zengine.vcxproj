@@ -13,8 +13,8 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\core\model.cpp" />
-    <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\window.cpp" />
+    <ClCompile Include="src\file\bmp_loader.cpp" />
     <ClCompile Include="src\file\file.cpp" />
     <ClCompile Include="src\math\line.cpp" />
     <ClCompile Include="src\math\matrix.cpp" />
@@ -25,9 +25,10 @@
   <ItemGroup>
     <ClInclude Include="src\core\color.hpp" />
     <ClInclude Include="src\core\model.hpp" />
-    <ClInclude Include="src\core\texture.hpp" />
     <ClInclude Include="src\core\window.hpp" />
+    <ClInclude Include="src\file\bmp_loader.hpp" />
     <ClInclude Include="src\file\file.hpp" />
+    <ClInclude Include="src\file\image_loader.hpp" />
     <ClInclude Include="src\math\line.hpp" />
     <ClInclude Include="src\math\math_util.hpp" />
     <ClInclude Include="src\math\matrix.hpp" />
