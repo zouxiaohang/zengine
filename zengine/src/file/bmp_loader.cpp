@@ -9,7 +9,7 @@ namespace zengine
 	vector3 bmp::getPixelColor(int w, int h)const
 	{
 		vector3 color;
-		auto c = data_+ (h * rowPad + w);
+		auto c = data_+ (h * rowPad + w * 3);
 		color.x_ = (unsigned char)(*c);
 		color.y_ = (unsigned char)(*c + 1);
 		color.z_ = (unsigned char)(*c + 2);

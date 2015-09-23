@@ -34,9 +34,11 @@ namespace zengine
 			header(std::size_t nv = 0) :numOfVertices_(nv){}
 			std::size_t numOfVertices_;
 		};
+		using textureCoordType = model::textureCoordType;
 	private:
 		std::ifstream ifs_;
 		std::vector<vector3> vertices_;
+		std::vector<textureCoordType> tcs_;
 		header header_;
 	private:
 		static const char * const headerMagic_;

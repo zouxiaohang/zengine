@@ -3,7 +3,7 @@
 
 namespace zengine
 {
-	model::model(const verticeArrayType& v) :vertices_(v)
+	model::model(const verticeArrayType& v, const textureCoordArrayType& tc) :vertices_(v), textureCoords_(tc)
 	{
 	}
 

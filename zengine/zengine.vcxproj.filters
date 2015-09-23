@@ -106,5 +106,8 @@
     <Image Include="screenshots\cube.png">
       <Filter>screenshots</Filter>
     </Image>
+    <Image Include="resource\zhuangbility.bmp">
+      <Filter>resource</Filter>
+    </Image>
   </ItemGroup>
 </Project>

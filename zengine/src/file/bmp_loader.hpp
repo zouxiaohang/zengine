@@ -29,11 +29,13 @@ namespace zengine
 		virtual ~bmpLoader(){}
 
 		virtual bool load();
-		std::unique_ptr<bmp> getBmp(){ return std::move(bmp_); }
+		std::shared_ptr<bmp> getBmp(){ return bmp_; }
 
 	private:
-		std::unique_ptr<bmp> bmp_;
+		std::shared_ptr<bmp> bmp_;
 	};
+
+	using bmpPtr = std::shared_ptr<bmp>;
 }
 
 #endif

@@ -4,9 +4,11 @@
 #include "../math/math_util.hpp"
 #include "../math/vector.hpp"
 #include "../math/line.hpp"
+#include "../file/bmp_loader.hpp"
 
 std::unique_ptr<zengine::window> WINDOW;
 zengine::modelPtr MODEL;
+zengine::bmpPtr BMP;
 
 namespace
 {
@@ -64,7 +66,7 @@ namespace
 		{
 			if (start.x_ > end.x_)
 			std::swap(start, end);
-			for (auto x = start.x_; x <= end.x_; ++x)
+			for (auto x = start.x_; x <= end.x_; x += 0.5)
 			{
 				auto y = k * x + b;
 				drawPixel(zengine::vector3(x, y, 1.0f), zengine::white);
@@ -74,7 +76,7 @@ namespace
 		{
 			if (start.y_ > end.y_)
 				std::swap(start, end);
-			for (auto y = start.y_; y <= end.y_; ++y)
+			for (auto y = start.y_; y <= end.y_; y += 0.5)
 			{
 				auto x = (y - b) / k;
 				drawPixel(zengine::vector3(x, y, 1.0f), zengine::white);
@@ -89,53 +91,65 @@ namespace
 		drawLine(p2, p3, color);
 		drawLine(p3, p1, color);
 	};
-	float zinterpolate(float z1, float z2, float t)
+	float interpolate(float n1, float n2, float t)
 	{
-		return z1 * (1 - t) + z2 * t;
+		return n1 * (1 - t) + n2 * t;
 	}
+	float clamp(int n)
+	{
+		return std::max(0.0, n / 255.0);
+	}
+	auto mapTexture = []{
+		const auto& screen = MODEL->modelInScreen();
+		const auto& textureCoords = MODEL->modelTextureCoord();
+		const auto& texData = BMP->data_;
+
+		float xMin = screen[1].x_, xMax = screen[0].x_;
+		float yMin = screen[1].y_, yMax = screen[5].y_;
+		if (xMin > xMax)
+			std::swap(xMin, xMax);
+		if (yMin > yMax)
+			std::swap(yMin, yMax);
+
+		for (float x = xMin; x <= xMax; x += 0.5)
+		{
+			for (float y = yMin; y <=yMax; y += 0.5)
+			{
+				int w = (x - xMin) * BMP->width_ / (xMax - xMin);
+				int h = (y - yMin) * BMP->height_ / (yMax - yMin);
+				auto c = BMP->getPixelColor(w, h);
+				drawPixel(zengine::vector3(x, y, 1.0f),
+					zengine::vector4(clamp(c.x_), clamp(c.y_), clamp(c.z_), 1.0f));
+			}
+		}
+	};
 	auto displayCube = []{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glColor3f(1.0f, 0.0f, 0.0f);
 		MODEL->clear();
 		WINDOW->update();
 		const auto& screen = MODEL->modelInScreen();
-		//// fill zbuffer
-		//for (const auto& pair : indicesPairs)
-		//{
-		//	const auto& start = screen[pair.first], end = screen[pair.second];
-		//	//zengine::line line(screen[pair.first], screen[pair.second] - screen[pair.first]);
-		//	auto length = (end - start).length();
-		//	auto k = (end.y_ - start.y_) / (end.x_ - start.x_);
-		//	auto b = end.y_ - k * end.x_;
-		//	for (auto x = start.x_; x <= end.x_; ++x)
-		//	{
-		//		auto y = k * x + b;
-		//		auto len = sqrtf((y - start.y_) * (y - start.y_) + (x - start.x_) * (x - start.x_));
-		//		auto t = len / length;
-		//		auto z = zinterpolate(start.z_, end.z_, t);
-		//		WINDOW->setZbuffer(x, y, z);
-		//	}
-		//}
 
-		//const std::pair<int, int> indicesPairs[] = {
-		//	{ 0, 3 }, { 0, 1 }, { 0, 4 }, { 1, 2 },
-		//	{ 1, 5 }, { 2, 3 }, { 2, 6 }, { 3, 7 },
-		//	{ 4, 5 }, { 4, 7 }, { 5, 6 }, { 6, 7 },
-		//};
-		//for (const auto& pair : indicesPairs)
-		//{
-		//	drawLine(screen[pair.first], screen[pair.second], zengine::white);
-		//}
-
-		const std::vector<int> indicesVectors[] = {
-			{ 0, 1, 3 }, { 1, 2, 3 }, { 1, 3, 4 }, { 3, 4, 7 }, 
-			{ 2, 3, 7 }, { 2, 6, 7 }, { 1, 2, 5 }, { 2, 5, 6 }, 
-			{ 0, 1, 4 }, { 1, 4, 5 }, { 4, 5, 7 }, { 5, 6, 7 },
+		const std::pair<int, int> indicesPairs[] = {
+			{ 0, 3 }, { 0, 1 }, { 0, 4 }, { 1, 2 },
+			{ 1, 5 }, { 2, 3 }, { 2, 6 }, { 3, 7 },
+			{ 4, 5 }, { 4, 7 }, { 5, 6 }, { 6, 7 },
 		};
-		for (const auto& v3 : indicesVectors)
+		for (const auto& pair : indicesPairs)
 		{
-			drawTriangle(screen[v3[0]], screen[v3[1]], screen[v3[2]], zengine::white);
+			drawLine(screen[pair.first], screen[pair.second], zengine::white);
 		}
+		mapTexture();
+		//const std::vector<int> indicesVectors[] = {
+		//	{ 0, 1, 3 }, { 1, 2, 3 }, { 1, 3, 4 }, { 3, 4, 7 }, 
+		//	{ 2, 3, 7 }, { 2, 6, 7 }, { 1, 2, 5 }, { 2, 5, 6 }, 
+		//	{ 0, 1, 4 }, { 1, 4, 5 }, { 4, 5, 7 }, { 5, 6, 7 },
+		//};
+		//for (const auto& v3 : indicesVectors)
+		//{
+		//	drawTriangle(screen[v3[0]], screen[v3[1]], screen[v3[2]], zengine::white);
+		//}
+
 		glFlush();
 	};
 }
@@ -167,7 +181,7 @@ namespace zengine
 		glutInitWindowPosition(400, 250);
 		glutCreateWindow(title_);
 
-		glClearColor(0.0, 0.0, 0.0, 0.0);
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glLoadIdentity();
 		glOrtho(0, width_, 0, height_, near_, far_);
 
@@ -179,6 +193,7 @@ namespace zengine
 	{
 		MODEL = model_;
 		WINDOW = std::make_unique<window>(*this);
+		BMP = MODEL->getBmpTexture();
 		//update();
 
 		glutDisplayFunc(displayCube);
@@ -197,7 +212,7 @@ namespace zengine
 		zengine::matrix rotationY, rotationX;
 		zengine::matrix translation;
 		zengine::matrix worldTransform;
-		scale.setScale(zengine::vector3(1, 1, 1));
+		scale.setScale(zengine::vector3(1.5, 1.5, 1.5));
 		translation.setTranslation(zengine::vector3(0, -2, 1) + position);
 		rotationX.setRotationX(15 + rotation.x_);
 		rotationY.setRotationY(-60 + rotation.y_);
@@ -205,7 +220,7 @@ namespace zengine
 
 		//wolrd space to camera space
 		zengine::matrix viewTransform;
-		zengine::vector3 eye(0, 0, -10);
+		zengine::vector3 eye(0, 0, -15);
 		zengine::vector3 focus(0, 0, 0);
 		zengine::vector3 up(0, 1, 0);
 		viewTransform.setLookAtLH(eye, focus, up);

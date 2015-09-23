@@ -45,11 +45,18 @@ namespace zengine
 			while (vn--)
 			{
 				std::getline(ifs_, verticesLine);
-				auto vertices = split(verticesLine);
-				for (const auto& v : vertices)
+				auto v = split(verticesLine);
 				{
-					vertices_.emplace_back(toVector3(v));
+					vertices_.emplace_back(toVector3(v[0]));
 				}
+				{
+					if (v.size() >= 2)
+					{
+						auto t = split(v[1], ",");
+						tcs_.emplace_back(std::stof(t[0]), std::stof(t[1]));
+					}
+				}
+				
 			}
 			assert(header_.numOfVertices_ == vertices_.size());
 		}
@@ -59,12 +66,12 @@ namespace zengine
 	{
 		std::vector<std::string> vs;
 		size_t prev = 0;
-		auto curr = verticeLine.find(" ");
+		auto curr = verticeLine.find(delimiter);
 		while (curr != std::string::npos)
 		{
 			vs.emplace_back(verticeLine.substr(prev, curr - prev));
 			prev = curr + 1;
-			curr = verticeLine.find(" ", prev);
+			curr = verticeLine.find(delimiter, prev);
 		}
 		vs.emplace_back(verticeLine.substr(prev, verticeLine.size() - prev));
 		return vs;
@@ -78,6 +85,6 @@ namespace zengine
 
 	modelPtr file::getModel()const
 	{
-		return std::make_shared<model>(vertices_);
+		return std::make_shared<model>(vertices_, tcs_);
 	}
 }
